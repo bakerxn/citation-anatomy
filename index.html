@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Citation Anatomy</title>
+<meta name="description" content="Click any part of an APA or MLA citation to learn what it is, where to find it, and why it matters, then quiz yourself.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: catalog-card citation on top, legend + explanation panel below.
+   Parts are grouped by the question they answer (who/when/what/where/find),
+   and each group has its own colour AND its own underline style, so colour is never the only cue. */
+:root{
+  --bg:#eef0ea; --surface:#fbfbf7; --ink:#1f2a24; --muted:#5d6b62; --rule:#d4dacf; --edge:#76837a;
+  --accent:#2f5d4a; --accent-ink:#ffffff; --focus:#2f5d4a;
+  --who:#9a4523; --when:#735800; --what:#2f5d4a; --where:#3d5a8a; --find:#7a3f78;
+  --who-bg:#f6e3d9; --when-bg:#f4ebc6; --what-bg:#dcebe2; --where-bg:#dde5f2; --find-bg:#efdeee;
+  --good:#2f7a4a; --bad:#a63a2a;
+  --f-cite:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-ui:"Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141a17; --surface:#1c2420; --ink:#e7ece6; --muted:#9caa9f; --rule:#2e3a33; --edge:#6b7a70;
+  --accent:#8fc7a9; --accent-ink:#0f1512; --focus:#8fc7a9;
+  --who:#f0a07a; --when:#e5c55a; --what:#8fc7a9; --where:#9db8e6; --find:#d9a3d6;
+  --who-bg:#3f2a20; --when-bg:#3a3215; --what-bg:#1f3a2e; --where-bg:#1f2b40; --find-bg:#37233a;
+  --good:#7fd29a; --bad:#f08a7a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141a17; --surface:#1c2420; --ink:#e7ece6; --muted:#9caa9f; --rule:#2e3a33; --edge:#6b7a70;
+  --accent:#8fc7a9; --accent-ink:#0f1512; --focus:#8fc7a9;
+  --who:#f0a07a; --when:#e5c55a; --what:#8fc7a9; --where:#9db8e6; --find:#d9a3d6;
+  --who-bg:#3f2a20; --when-bg:#3a3215; --what-bg:#1f3a2e; --where-bg:#1f2b40; --find-bg:#37233a;
+  --good:#7fd29a; --bad:#f08a7a; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:0.9375rem;line-height:1.55}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:max(16px, env(safe-area-inset-left, 0px));top:calc(8px + env(safe-area-inset-top, 0px));z-index:10;background:var(--accent);color:var(--accent-ink);padding:8px 14px;border-radius:6px;transform:translateY(-200%)}
+.skip:focus{transform:none}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+[tabindex="-1"]:focus{outline:none}
+
+.wrap{max-width:60rem;margin:0 auto;padding-block:28px 48px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:22px}
+header{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-cite);font-weight:600;font-size:clamp(1.75rem,5vw,2.5rem);line-height:1.1;margin:0;text-wrap:balance}
+.lede{margin:0;color:var(--muted);max-width:62ch}
+main{display:flex;flex-direction:column;gap:22px}
+
+.controls{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:start}
+.ctl{display:flex;flex-direction:column;gap:6px;min-width:0}
+.ctl-label{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;border:1px solid var(--edge);border-radius:8px;background:var(--surface);padding:3px;gap:2px}
+.seg button{font:inherit;font-size:0.875rem;border:0;background:transparent;color:var(--ink);padding:7px 12px;min-height:36px;border-radius:6px;cursor:pointer}
+.seg button:hover{background:var(--bg)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:500}
+
+/* catalog card */
+.card{position:relative;background:var(--surface);border:1px solid var(--edge);border-radius:4px;padding:20px 22px 22px 44px}
+.card::before{content:"";position:absolute;top:0;bottom:0;left:30px;width:1px;background:var(--who);opacity:.4}
+.card-meta{display:flex;justify-content:space-between;gap:6px 14px;flex-wrap:wrap;font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--rule);margin-bottom:6px}
+.fake{color:var(--who);font-weight:500}
+.cite{font-family:var(--f-cite);font-size:clamp(1.125rem,2.6vw,1.375rem);line-height:2.4;padding-left:2.2em;text-indent:-2.2em;margin:0;overflow-wrap:anywhere;
+  background-image:linear-gradient(to bottom, transparent calc(100% - 1px), var(--rule) calc(100% - 1px));background-size:100% 2.4em}
+.part{border-radius:3px;cursor:pointer;padding:2px 0;text-decoration-line:underline;text-decoration-thickness:2px;text-underline-offset:6px;text-decoration-color:var(--c);text-decoration-style:var(--ls);transition:background-color .15s}
+.part:hover{background:var(--cbg)}
+.part[aria-pressed="true"]{background:var(--cbg);outline:2px solid var(--c);outline-offset:1px}
+.part.dim{color:var(--muted)}
+.part.right{background:var(--cbg);outline:3px solid var(--good);outline-offset:1px}
+.part.wrong{outline:3px dashed var(--bad);outline-offset:1px;animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+.g-who{--c:var(--who);--cbg:var(--who-bg);--ls:solid}
+.g-when{--c:var(--when);--cbg:var(--when-bg);--ls:double}
+.g-what{--c:var(--what);--cbg:var(--what-bg);--ls:dotted}
+.g-where{--c:var(--where);--cbg:var(--where-bg);--ls:dashed}
+.g-find{--c:var(--find);--cbg:var(--find-bg);--ls:wavy}
+.quiz .part{text-decoration-color:var(--edge);text-decoration-style:solid}
+.quiz .part:hover{background:var(--bg)}
+
+.tip{margin:16px 0 0;display:flex;gap:10px;align-items:baseline;font-size:0.9375rem;max-width:68ch}
+.tip-label{flex:none;font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--who);font-weight:500}
+.kbd-hint{margin:10px 0 0;font-size:0.8125rem;color:var(--muted)}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:18px;align-items:start}
+@media (max-width:720px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--edge);border-radius:8px;padding:18px 18px 20px;min-width:0}
+.panel-h{font-size:0.8125rem;font-family:var(--f-mono);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+.groups{display:flex;flex-direction:column;gap:16px;margin:0;padding:0;list-style:none}
+.group-name{font-size:0.8125rem;font-weight:700;color:var(--c);margin:0 0 8px;text-decoration:underline 2px var(--ls) var(--c);text-underline-offset:5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.chip{font:inherit;font-size:0.875rem;border:1px solid var(--edge);background:transparent;color:var(--ink);border-radius:999px;padding:5px 12px;min-height:32px;cursor:pointer}
+.chip:hover{border-color:var(--c);background:var(--cbg)}
+.chip[aria-pressed="true"]{background:var(--cbg);border:2px solid var(--c);padding:4px 11px;font-weight:500}
+
+.detail-empty{color:var(--muted);margin:0;max-width:60ch}
+.d-head{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.d-tag{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.d-title{font-family:var(--f-cite);font-size:1.625rem;font-weight:600;margin:0;line-height:1.15}
+.d-sample{font-family:var(--f-cite);font-size:1.0625rem;background:var(--cbg);border-radius:4px;padding:6px 10px;margin:0 0 16px;overflow-wrap:anywhere}
+dl{margin:0;display:flex;flex-direction:column;gap:14px}
+dt{font-size:0.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+dd{margin:0;max-width:62ch}
+.style-note{border-left:3px var(--ls) var(--c);padding:4px 0 4px 12px}
+
+.quizbar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between}
+.prompt{font-family:var(--f-cite);font-size:1.5rem;font-weight:400;margin:0;line-height:1.25}
+.prompt b{color:var(--accent);font-weight:600}
+.q-source{margin:4px 0 0;font-size:0.875rem;color:var(--muted)}
+.score{font-family:var(--f-mono);font-size:0.8125rem;color:var(--muted);font-variant-numeric:tabular-nums;margin:0}
+.feedback{margin:14px 0 0;min-height:1.6em;max-width:68ch}
+.feedback.good{color:var(--good)} .feedback.bad{color:var(--bad)}
+.feedback strong{font-weight:700}
+.btn{font:inherit;font-weight:500;border:2px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:8px 16px;min-height:40px;border-radius:6px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+footer{font-size:0.8125rem;color:var(--muted);max-width:72ch}
+footer a{color:var(--accent)}
+
+@media (forced-colors: active){
+  .part[aria-pressed="true"],.part.right{outline:3px solid Highlight}
+  .part.wrong{outline:3px dashed Highlight}
+  .seg button[aria-pressed="true"],.chip[aria-pressed="true"]{outline:2px solid Highlight;outline-offset:1px}
+  .card::before{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#card">Skip to the citation</a>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Anatomy of a source</span>
+    <h1>Citation Anatomy</h1>
+    <p class="lede">Every piece of a citation answers a question about the source: who made it, when, what it is, where it was published, and how to find it again. Select any part to see what it tells you.</p>
+  </header>
+
+  <main>
+    <div class="controls">
+      <div class="ctl"><span class="ctl-label" id="srcLabel">Source type</span><div class="seg" id="srcSeg" role="group" aria-labelledby="srcLabel"></div></div>
+      <div class="ctl"><span class="ctl-label" id="styleLabel">Citation style</span><div class="seg" id="styleSeg" role="group" aria-labelledby="styleLabel"></div></div>
+      <div class="ctl"><span class="ctl-label" id="modeLabel">Mode</span><div class="seg" id="modeSeg" role="group" aria-labelledby="modeLabel"></div></div>
+    </div>
+
+    <section class="card" id="card" tabindex="-1" aria-labelledby="citeHeading">
+      <h2 class="sr-only" id="citeHeading">Example citation</h2>
+      <div class="card-meta"><span id="metaType"></span><span class="fake">Made-up example</span><span id="metaStyle"></span></div>
+      <p class="cite" id="cite"></p>
+      <p class="tip" id="tip"><span class="tip-label">Watch out</span><span id="tipText"></span></p>
+      <p class="kbd-hint" id="kbdHint">Keyboard: press Tab to move between parts of the citation, and Enter or Space to select one.</p>
+    </section>
+
+    <div class="grid" id="exploreView">
+      <section class="panel" aria-labelledby="partsHeading">
+        <h2 class="panel-h" id="partsHeading">Parts in this citation</h2>
+        <ul class="groups" id="groups"></ul>
+      </section>
+      <section class="panel" id="detail" aria-labelledby="detailHeading">
+        <h2 class="panel-h" id="detailHeading">About this part</h2>
+        <div id="detailBody"></div>
+      </section>
+    </div>
+
+    <section class="panel" id="quizView" hidden aria-labelledby="prompt">
+      <div class="quizbar">
+        <div>
+          <h2 class="prompt" id="prompt" tabindex="-1"></h2>
+          <p class="q-source" id="qSource"></p>
+        </div>
+        <p class="score" id="score"></p>
+      </div>
+      <p class="feedback" id="feedback" role="status"></p>
+      <div class="row">
+        <button class="btn" id="nextBtn" type="button">Next question</button>
+        <button class="btn ghost" id="resetBtn" type="button">Reset score</button>
+      </div>
+    </section>
+
+    <p class="sr-only" id="status" role="status"></p>
+  </main>
+
+  <footer>
+    All example sources on this page are made up for practice. The authors, titles, journals, companies, and links are not real, so you won't find them in a library database. Citations follow APA 7th edition and MLA 9th edition, including APA's September 2025 and MLA's August 2025 updates for generative AI. Style guidance changes, so check with your instructor or a librarian for the latest.
+  </footer>
+</div>
+
+<script>
+document.documentElement.lang = "en";
+
+const GROUPS = {
+  who:{name:"Who made it"}, when:{name:"When"}, what:{name:"What it is"},
+  where:{name:"Where it was published"}, find:{name:"How to find it again"}
+};
+
+const PARTS = {
+  author:{group:"who",name:"Author",
+    what:"The person or people responsible for the work.",
+    find:"Under the title on the first page of an article, on a book's title page, or in a byline on a web page.",
+    why:"Look the author up. What are their credentials, and do they have expertise in this topic? The author is also how most reference lists are alphabetized.",
+    apa:"Last name, then initials only. Join two authors with an ampersand (&).",
+    mla:"Last name, then full first name. For two authors, the second is written first name first, joined by \"and.\""},
+  orgAuthor:{group:"who",name:"Group author",
+    what:"An organization, agency, or company credited as the author instead of a person.",
+    find:"In the page header, footer, \"About\" page, or the report's cover.",
+    why:"Ask what the organization does and who funds it. A government agency, an advocacy group, and a company selling a product all have different reasons to publish.",
+    apa:"The organization goes in the author position.",
+    mla:"When the organization is both author and publisher, MLA skips the author and starts with the title."},
+  editors:{group:"who",name:"Editors",
+    what:"The people who selected and organized the chapters in an edited book. They did not write this chapter.",
+    find:"On the book's title page or cover, usually marked \"Edited by.\"",
+    why:"Editors tell you who curated the collection. Respected editors and a reputable press suggest the chapters were reviewed.",
+    apa:"Initials come first: \"In J. Pruitt & K. Moss (Eds.).\"",
+    mla:"Written out as \"edited by\" with full names."},
+  aiCompany:{group:"who",name:"AI company",
+    what:"The company that built the AI tool.",
+    find:"On the tool's website or its About page.",
+    why:"An AI tool isn't a person and can't take responsibility for what it says. Knowing the company tells you who built it, but you still need to check any facts it gives you against other sources.",
+    apa:"Goes in the author position.",
+    mla:"Not an author. MLA never treats an AI tool or its company as the author. The company goes in the publisher slot instead."},
+  date:{group:"when",name:"Publication date",
+    what:"When the work was published.",
+    find:"On the first page of an article, the copyright page of a book, or the top or bottom of a web page.",
+    why:"Is the source current enough for your topic? In fast-moving fields like technology or medicine, a few years can matter a lot. In history or literature, older can be fine.",
+    apa:"The year goes in parentheses right after the author. Web pages and newspapers add the month and day.",
+    mla:"The date goes near the end, after the publisher or container details."},
+  accessDate:{group:"when",name:"Access date",
+    what:"The day you looked at the page.",
+    find:"Your own records. Write it down when you visit the page.",
+    why:"Web pages change or disappear. The access date tells your reader which version you saw.",
+    apa:"Usually left out. APA adds a retrieval date only for pages designed to change over time.",
+    mla:"Optional for most sources, but recommended when a page has no date. It goes at the very end."},
+  articleTitle:{group:"what",name:"Article title",
+    what:"The title of the specific article you read.",
+    find:"At the top of the article's first page.",
+    why:"The title, and especially any subtitle after the colon, tells you the article's focus. It helps you decide quickly if the source is on topic.",
+    apa:"Sentence case: only the first word, the first word after a colon, and proper nouns are capitalized. No italics or quotation marks.",
+    mla:"Title Case, in quotation marks."},
+  chapterTitle:{group:"what",name:"Chapter title",
+    what:"The title of the one chapter you used from a larger book.",
+    find:"In the book's table of contents and at the start of the chapter.",
+    why:"Cite the chapter, not the whole book, so your reader can find the exact part you used and its actual author.",
+    apa:"Sentence case, no italics.",
+    mla:"Title Case, in quotation marks."},
+  bookTitle:{group:"what",name:"Book title",
+    what:"The title of the book.",
+    find:"On the cover and title page.",
+    why:"Tells you the scope of the whole work. Subtitles often reveal the angle or argument.",
+    apa:"Italic, sentence case.",
+    mla:"Italic, Title Case."},
+  pageTitle:{group:"what",name:"Page title",
+    what:"The title of the specific web page or report.",
+    find:"In the main heading of the page, or in the browser tab.",
+    why:"Is it a report, a news story, a blog post, or an ad? The page title and layout help you identify what kind of source it is.",
+    apa:"Italic, sentence case.",
+    mla:"In quotation marks, Title Case."},
+  chatTitle:{group:"what",name:"Chat title",
+    what:"The title of the specific AI conversation.",
+    find:"In the tool's chat history or sidebar. Most tools let you rename a chat.",
+    why:"A clear title tells your reader what you asked about before they open the chat.",
+    apa:"Italic, sentence case. If the automatic title is vague, rename the chat in the tool first."},
+  prompt:{group:"what",name:"Prompt description",
+    what:"A description of what you asked the AI: usually your prompt in quotation marks, followed by the word \"prompt.\"",
+    find:"It's what you typed into the tool.",
+    why:"AI output depends heavily on how you ask. Including the prompt lets your reader judge how you got the response.",
+    mla:"Goes in the title slot, since AI output has no real title of its own."},
+  aiDescription:{group:"what",name:"Description",
+    what:"A short label in square brackets that says what kind of source this is.",
+    find:"You write it yourself.",
+    why:"Your reader can see right away that this is AI output, not a published source someone reviewed.",
+    apa:"In square brackets after the title, such as [Generative AI chat]."},
+  aiModel:{group:"what",name:"Model or version",
+    what:"The specific model or version of the AI tool you used.",
+    find:"In the tool's model picker or settings.",
+    why:"AI tools are updated often, and a newer model may answer the same prompt differently.",
+    mla:"Goes in the version slot, written as \"model\" plus the name."},
+  edition:{group:"what",name:"Edition",
+    what:"Which version of the book you used, if it isn't the first.",
+    find:"On the cover or title page, such as \"Second Edition.\"",
+    why:"Page numbers and content change between editions. A newer edition often means updated information.",
+    apa:"In parentheses after the title: (2nd ed.).",
+    mla:"After the title: 2nd ed."},
+  journal:{group:"where",name:"Journal name",
+    what:"The publication the article appeared in. MLA calls this the \"container.\"",
+    find:"In the header or footer of the article, or on the journal's website.",
+    why:"Is the journal peer reviewed? Who is its audience? Check the journal's website or a directory like Ulrichsweb.",
+    apa:"Italic, Title Case.",
+    mla:"Italic, Title Case, followed by a comma."},
+  newspaper:{group:"where",name:"Newspaper name",
+    what:"The newspaper or news site that published the article.",
+    find:"In the masthead at the top of the page, or the site's logo.",
+    why:"News articles are written by journalists for a general audience and aren't peer reviewed. They're good for current events and local context, but for research findings, look for the original study the article reports on.",
+    apa:"Italic, Title Case. Newspapers have no volume or issue in the citation.",
+    mla:"Italic. This is the container."},
+  editedBook:{group:"where",name:"Book (container)",
+    what:"The larger book that holds the chapter you used.",
+    find:"On the book's cover and title page.",
+    why:"The chapter lives inside this book. Your reader needs both titles to find it on a shelf or in a catalog.",
+    apa:"Italic, sentence case, after \"In\" and the editors.",
+    mla:"Italic, Title Case. This is the container."},
+  siteName:{group:"where",name:"Website name",
+    what:"The larger website that hosts the page.",
+    find:"In the site logo, header, or footer.",
+    why:"Helps you judge the publisher's purpose and authority. Check the site's About page.",
+    apa:"Not italic. Left out when it's the same as the group author.",
+    mla:"Italic. This is the container."},
+  aiTool:{group:"where",name:"AI tool",
+    what:"The name of the AI tool or model you used.",
+    find:"In the tool's interface, often near the model picker.",
+    why:"Different tools give different answers to the same prompt, so your reader needs to know which one you used.",
+    apa:"Not italic. Comes after the bracketed description, followed by the chat link.",
+    mla:"Italic. In MLA, the AI tool is the container."},
+  volume:{group:"where",name:"Volume",
+    what:"Journals are grouped into volumes, usually one volume per year.",
+    find:"On the article's first page, in the header or footer, or in the database record.",
+    why:"Volume, issue, and pages together pinpoint exactly where the article sits inside the journal. They're also a clue that you're looking at a journal rather than a newspaper or magazine.",
+    apa:"Italic, right after the journal name.",
+    mla:"Written as \"vol. 49.\""},
+  issue:{group:"where",name:"Issue",
+    what:"The individual installment within a volume, like one month's or one season's release.",
+    find:"Next to the volume number on the article or in the database record.",
+    why:"Narrows down the location within the volume.",
+    apa:"In parentheses right after the volume, not italic.",
+    mla:"Written as \"no. 4.\""},
+  pages:{group:"where",name:"Page range",
+    what:"The first and last page of the article or chapter.",
+    find:"At the top or bottom corners of the pages, or in the database record.",
+    why:"Length can be a clue. A 17-page article likely goes deeper than a 2-page opinion piece.",
+    apa:"Full numbers with an en dash: 112–129. Chapters use \"pp.\" in parentheses.",
+    mla:"Starts with \"pp.\" and can shorten the second number: pp. 112–29."},
+  publisher:{group:"where",name:"Publisher",
+    what:"The company or university press that produced the book.",
+    find:"On the title page or copyright page.",
+    why:"University presses usually send books through scholarly review. Self-published or advocacy publishers may not.",
+    apa:"Name as shown. APA 7 no longer includes the city.",
+    mla:"\"University Press\" is shortened to \"UP.\""},
+  doi:{group:"find",name:"DOI",
+    what:"A Digital Object Identifier: a permanent ID that always points to this article, even if the website moves.",
+    find:"On the article's first page or in the database record. It starts with \"10.\"",
+    why:"A DOI is a good sign the source was formally published. It's also the most reliable way for your reader to find it.",
+    apa:"Written as a full link: https://doi.org/...",
+    mla:"Also a full link, followed by a period."},
+  url:{group:"find",name:"URL",
+    what:"The web address of the page.",
+    find:"In your browser's address bar.",
+    why:"The domain gives clues: .gov, .edu, .org, and .com sites have different purposes. A .org can still be run by anyone, so check the About page.",
+    apa:"The full address, including https://.",
+    mla:"Leave off https:// and end with a period."},
+  shareLink:{group:"find",name:"Share link",
+    what:"A public link to the exact conversation.",
+    find:"Most AI tools have a Share button that creates one.",
+    why:"Lets your reader see the whole chat, including your prompt. If the tool can't make a share link, use the tool's main web address instead.",
+    apa:"The full link, after the tool name.",
+    mla:"Leave off https://. If there's no share link, use the tool's main address."}
+};
+
+// Segments: a string is punctuation or connecting words; [part, html] is a selectable part.
+const SOURCES = [
+  {id:"article",label:"Journal article",
+    tip:"Volume, issue, and page numbers are what mark this as a scholarly journal. The issue number is the part students skip most often.",
+    apa:[["author","Okafor, A. N., & Lindqvist, M."]," (",["date","2023"],"). ",["articleTitle","Study rooms after dark: Late-night library use and first-year persistence"],". ",["journal","<i>Journal of Academic Librarianship Practice</i>"],", ",["volume","<i>49</i>"],["issue","(4)"],", ",["pages","112–129"],". ",["doi","https://doi.org/10.5555/jalp.2023.4917"]],
+    mla:[["author","Okafor, Adaeze N., and Mats Lindqvist"],". ",["articleTitle","“Study Rooms after Dark: Late-Night Library Use and First-Year Persistence.”"]," ",["journal","<i>Journal of Academic Librarianship Practice</i>"],", ",["volume","vol. 49"],", ",["issue","no. 4"],", ",["date","2023"],", ",["pages","pp. 112–29"],", ",["doi","https://doi.org/10.5555/jalp.2023.4917"],"."]},
+  {id:"book",label:"Book",
+    tip:"APA 7 dropped the publisher's city. If an older guide tells you to include it, that's APA 6.",
+    apa:[["author","Reyes, T."]," (",["date","2021"],"). ",["bookTitle","<i>The open shelf: How free textbooks are changing college</i>"]," ",["edition","(2nd ed.)"],". ",["publisher","Riverbend University Press"],"."],
+    mla:[["author","Reyes, Teresa"],". ",["bookTitle","<i>The Open Shelf: How Free Textbooks Are Changing College</i>"],". ",["edition","2nd ed."],", ",["publisher","Riverbend UP"],", ",["date","2021"],"."]},
+  {id:"chapter",label:"Book chapter",
+    tip:"Cite the person who wrote the chapter, not the editors. The editors come later, after the chapter title.",
+    apa:[["author","Haddad, S."]," (",["date","2020"],"). ",["chapterTitle","Reading the algorithm"],". In ",["editors","J. Pruitt & K. Moss (Eds.)"],", ",["editedBook","<i>Information in everyday life</i>"]," ",["pages","(pp. 45–67)"],". ",["publisher","Lakeview Academic"],"."],
+    mla:[["author","Haddad, Samir"],". ",["chapterTitle","“Reading the Algorithm.”"]," ",["editedBook","<i>Information in Everyday Life</i>"],", ",["editors","edited by Jolene Pruitt and Kevin Moss"],", ",["publisher","Lakeview Academic"],", ",["date","2020"],", ",["pages","pp. 45–67"],"."]},
+  {id:"news",label:"Newspaper article",
+    tip:"There's no volume, issue, or page range, and the author is a journalist. Ask yourself: is this article the research, or a report about someone else's research?",
+    notes:{articleTitle:{name:"Headline",what:"The title of the news article.",find:"At the top of the article, in large type."}},
+    apa:[["author","Delgado, R."]," (",["date","2025, November 4"],"). ",["articleTitle","Commuter students say campus hours don’t fit their lives"],". ",["newspaper","<i>The Valley Courier</i>"],". ",["url","https://www.valleycourier.example.com/news/commuter-students"]],
+    mla:[["author","Delgado, Rosa"],". ",["articleTitle","“Commuter Students Say Campus Hours Don’t Fit Their Lives.”"]," ",["newspaper","<i>The Valley Courier</i>"],", ",["date","4 Nov. 2025"],", ",["url","www.valleycourier.example.com/news/commuter-students"],"."]},
+  {id:"web",label:"Web page: group author",
+    tip:"When an organization is the author, there's no person to look up. Check the organization's About page and who funds it instead.",
+    apa:[["orgAuthor","National Center for Learning Data"],". (",["date","2024, March 8"],"). ",["pageTitle","<i>Who uses campus food pantries?</i>"]," ",["url","https://www.example.org/reports/campus-pantries"]],
+    mla:[["pageTitle","“Who Uses Campus Food Pantries?”"]," ",["siteName","<i>National Center for Learning Data</i>"],", ",["date","8 Mar. 2024"],", ",["url","www.example.org/reports/campus-pantries"],"."]},
+  {id:"noauthor",label:"Web page: no author or date",
+    tip:"No author? Don't write \"Anonymous.\" Move the title to the front. No date? APA uses (n.d.), and MLA adds the date you accessed the page. A missing author and date are also a reason to question the source.",
+    notes:{
+      pageTitle:{why:"With no author, the title moves to the front of the citation. Ask yourself why no one put their name on this page.",
+        apa:"Moves into the author position. Italic, sentence case.",mla:"Starts the entry, in quotation marks."},
+      date:{name:"No date (n.d.)",what:"\"n.d.\" stands for \"no date.\" The page doesn't say when it was written or last updated.",
+        find:"Check the top and bottom of the page. If you can't find a date anywhere, use n.d.",
+        why:"Without a date, you can't tell if the information is current. Check the facts in another source, or look for a better one.",
+        apa:"Written as (n.d.) in the date position."},
+      siteName:{apa:"Not italic. Included here because there's no group author with the same name."}
+    },
+    apa:[["pageTitle","<i>Tips for managing study stress</i>"],". (",["date","n.d."],"). ",["siteName","Study Well Hub"],". ",["url","https://studywell.example.com/tips/study-stress"]],
+    mla:[["pageTitle","“Tips for Managing Study Stress.”"]," ",["siteName","<i>Study Well Hub</i>"],", ",["url","studywell.example.com/tips/study-stress"],". ",["accessDate","Accessed 3 Mar. 2026"],"."]},
+  {id:"ai",label:"AI chat",
+    tip:"APA lists the AI company as the author. MLA never treats AI as an author and describes your prompt instead. Both styles updated their AI guidance in 2025, so older examples you find online may be out of date.",
+    notes:{
+      date:{name:"Chat date",what:"The day the conversation happened.",find:"In the chat history, or note it yourself when you chat.",
+        why:"The same prompt can get a different answer on a different day, as tools are updated.",
+        apa:"Year, month, and day in parentheses after the company.",mla:"Day, month, and year, after the publisher."}
+    },
+    apa:[["aiCompany","Northlight AI"],". (",["date","2026, February 11"],"). ",["chatTitle","<i>Peer review versus editorial review</i>"]," ",["aiDescription","[Generative AI chat]"],". ",["aiTool","Lumen 3"],". ",["shareLink","https://lumen.example.com/share/7f3a9c"]],
+    mla:[["prompt","“Explain the difference between peer review and editorial review” prompt"],". ",["aiTool","<i>Lumen</i>"],", ",["aiModel","model Lumen 3"],", ",["aiCompany","Northlight AI"],", ",["date","11 Feb. 2026"],", ",["shareLink","lumen.example.com/share/7f3a9c"],"."]}
+];
+const STYLES = {apa:"APA 7", mla:"MLA 9"};
+const MODES = {explore:"Explore", quiz:"Quiz me"};
+
+const S = {src:"article", style:"apa", mode:"explore", sel:"author", target:null, answered:false, right:0, total:0};
+try{
+  const saved = JSON.parse(localStorage.getItem("ca-prefs") || "{}");
+  if (SOURCES.some(s => s.id === saved.src)) S.src = saved.src;
+  if (STYLES[saved.style]) S.style = saved.style;
+}catch(e){}
+function savePrefs(){ try{ localStorage.setItem("ca-prefs", JSON.stringify({src:S.src, style:S.style})); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+const src = () => SOURCES.find(s => s.id === S.src);
+const partsInCite = () => [...new Set(src()[S.style].filter(Array.isArray).map(s => s[0]))];
+const def = p => Object.assign({}, PARTS[p], (src().notes || {})[p] || {});
+const strip = h => h.replace(/<[^>]+>/g, "");
+const announce = msg => { const s = $("status"); s.textContent = ""; setTimeout(() => { s.textContent = msg; }, 50); };
+
+// Keep keyboard focus in place when a section re-renders.
+function keepFocus(fn){
+  const id = document.activeElement && document.activeElement.id;
+  fn();
+  if (id && $(id) && document.activeElement !== $(id)) $(id).focus();
+}
+
+function buildSeg(el, opts, key){
+  el.innerHTML = "";
+  Object.entries(opts).forEach(([v, label]) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = label; b.id = el.id + "-" + v; b.dataset.v = v;
+    b.addEventListener("click", () => {
+      if (S[key] === v) return;
+      S[key] = v; changed(key);
+    });
+    el.appendChild(b);
+  });
+}
+function syncSeg(el, key){ el.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(S[key] === b.dataset.v))); }
+function syncControls(){ syncSeg($("srcSeg"), "src"); syncSeg($("styleSeg"), "style"); syncSeg($("modeSeg"), "mode"); }
+
+function changed(key){
+  savePrefs();
+  if (S.sel && !partsInCite().includes(S.sel)) S.sel = null;
+  syncControls();
+  $("exploreView").hidden = S.mode !== "explore";
+  $("quizView").hidden = S.mode !== "quiz";
+  $("kbdHint").hidden = false;
+  if (S.mode === "quiz") {
+    newQuestion(key === "mode");
+  } else {
+    keepFocus(() => { renderCite(); renderGroups(); renderDetail(); });
+    if (key === "mode") announce("Explore mode. Select a part of the citation to learn about it.");
+    else if (key) announce(`Showing a ${src().label.toLowerCase()} in ${STYLES[S.style]}.`);
+  }
+}
+
+function renderCite(){
+  $("metaType").textContent = src().label;
+  $("metaStyle").textContent = STYLES[S.style] + " reference";
+  $("tipText").textContent = src().tip;
+  $("tip").hidden = S.mode === "quiz";
+  $("card").classList.toggle("quiz", S.mode === "quiz");
+  const c = $("cite"); c.innerHTML = "";
+  let n = 0;
+  src()[S.style].forEach(s => {
+    if (typeof s === "string") { c.appendChild(document.createTextNode(s)); return; }
+    const [p, html] = s, d = def(p);
+    const sp = document.createElement("span");
+    sp.className = "part g-" + d.group;
+    sp.id = "part-" + (n++);
+    sp.dataset.part = p; sp.innerHTML = html;
+    sp.tabIndex = 0; sp.setAttribute("role", "button");
+    if (S.mode === "explore") sp.setAttribute("aria-label", d.name + ": " + strip(html));
+    sp.addEventListener("click", () => clickPart(p, sp));
+    sp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); clickPart(p, sp); } });
+    c.appendChild(sp);
+  });
+  paintCite();
+}
+
+function paintCite(){
+  document.querySelectorAll("#cite .part").forEach(sp => {
+    if (S.mode === "explore") {
+      sp.setAttribute("aria-pressed", String(sp.dataset.part === S.sel));
+      sp.classList.toggle("dim", !!S.sel && sp.dataset.part !== S.sel);
+    } else {
+      sp.removeAttribute("aria-pressed");
+      sp.classList.remove("dim");
+    }
+  });
+}
+
+function select(p){
+  S.sel = S.sel === p ? null : p;
+  keepFocus(() => { paintCite(); renderGroups(); renderDetail(); });
+  announce(S.sel ? `${def(S.sel).name} selected. Details are in the About this part section.` : "Selection cleared.");
+}
+
+function clickPart(p, sp){
+  if (S.mode === "explore") { select(p); return; }
+  if (S.answered) return;
+  S.total++;
+  const fb = $("feedback");
+  if (p === S.target) {
+    S.right++; S.answered = true;
+    document.querySelectorAll(`#cite .part[data-part="${p}"]`).forEach(x => x.classList.add("right"));
+    fb.className = "feedback good";
+    fb.innerHTML = `<strong>Correct.</strong> ${def(p).why}`;
+  } else {
+    sp.classList.remove("wrong"); void sp.offsetWidth; sp.classList.add("wrong");
+    fb.className = "feedback bad";
+    fb.innerHTML = `<strong>Not quite.</strong> That's the ${def(p).name.toLowerCase()}. Try again.`;
+  }
+  renderScore();
+}
+
+function renderGroups(){
+  const g = $("groups"); g.innerHTML = "";
+  const present = partsInCite();
+  Object.entries(GROUPS).forEach(([gid, gdef]) => {
+    const ps = present.filter(p => def(p).group === gid);
+    if (!ps.length) return;
+    const li = document.createElement("li"); li.className = "g-" + gid;
+    const h = document.createElement("h3"); h.className = "group-name"; h.id = "grp-" + gid; h.textContent = gdef.name;
+    const ul = document.createElement("ul"); ul.className = "chips"; ul.setAttribute("aria-labelledby", h.id);
+    ps.forEach(p => {
+      const item = document.createElement("li");
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.id = "chip-" + p;
+      b.textContent = def(p).name;
+      b.setAttribute("aria-pressed", String(S.sel === p));
+      b.addEventListener("click", () => select(p));
+      item.appendChild(b); ul.appendChild(item);
+    });
+    li.append(h, ul); g.appendChild(li);
+  });
+}
+
+function renderDetail(){
+  const box = $("detailBody"), panel = $("detail");
+  if (!S.sel) {
+    panel.className = "panel";
+    box.innerHTML = `<p class="detail-empty">Choose an underlined part of the citation, or a part from the list, to see what it is, where you'd find it on the source, and what it tells you about whether to trust it.</p>`;
+    return;
+  }
+  const d = def(S.sel);
+  const seg = src()[S.style].find(s => Array.isArray(s) && s[0] === S.sel);
+  panel.className = "panel g-" + d.group;
+  box.innerHTML = `
+    <div class="d-head">
+      <span class="d-tag">${GROUPS[d.group].name}</span>
+      <h3 class="d-title">${d.name}</h3>
+    </div>
+    <p class="d-sample"><span class="sr-only">In this citation: </span>${seg[1]}</p>
+    <dl>
+      <div><dt>What it is</dt><dd>${d.what}</dd></div>
+      <div><dt>Where to find it</dt><dd>${d.find}</dd></div>
+      <div><dt>Why it matters</dt><dd>${d.why}</dd></div>
+      ${d[S.style] ? `<div class="style-note"><dt>${STYLES[S.style]} formatting</dt><dd>${d[S.style]}</dd></div>` : ""}
+    </dl>`;
+}
+
+function newQuestion(focusPrompt){
+  const ps = partsInCite().filter(p => p !== S.target);
+  S.target = ps[Math.floor(Math.random() * ps.length)];
+  S.answered = false;
+  renderCite();
+  $("prompt").innerHTML = `Find the <b>${def(S.target).name.toLowerCase()}</b>.`;
+  $("qSource").textContent = `In the ${src().label.toLowerCase()} citation, ${STYLES[S.style]}. Select the matching part above.`;
+  $("feedback").className = "feedback"; $("feedback").textContent = "";
+  renderScore();
+  if (focusPrompt) $("prompt").focus();
+}
+function renderScore(){ $("score").textContent = `${S.right} correct of ${S.total} ${S.total === 1 ? "try" : "tries"}`; }
+
+$("nextBtn").addEventListener("click", () => {
+  if (Math.random() < .35) { // sometimes switch source or style, and say so in the prompt
+    S.src = SOURCES[Math.floor(Math.random() * SOURCES.length)].id;
+    S.style = Math.random() < .5 ? "apa" : "mla";
+    savePrefs(); syncControls();
+  }
+  newQuestion(true);
+});
+$("resetBtn").addEventListener("click", () => { S.right = 0; S.total = 0; renderScore(); announce("Score reset."); });
+
+buildSeg($("srcSeg"), Object.fromEntries(SOURCES.map(s => [s.id, s.label])), "src");
+buildSeg($("styleSeg"), STYLES, "style");
+buildSeg($("modeSeg"), MODES, "mode");
+changed();
+</script>
+</body>
+</html>
