@@ -4,16 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Citation Anatomy</title>
+<script>try{var t=localStorage.getItem("ca-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta name="description" content="Click any part of an APA or MLA citation to learn what it is, where to find it, and why it matters, then quiz yourself.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: catalog-card citation on top, legend + explanation panel below.
-   Parts are grouped by the question they answer (who/when/what/where/find),
-   and each group has its own colour AND its own underline style, so colour is never the only cue. */
+/* Plain white page; colour is reserved for the citation-part groups and callouts. Dark mode is a neutral charcoal. */
 :root{
-  --bg:#eef0ea; --surface:#fbfbf7; --ink:#1f2a24; --muted:#5d6b62; --rule:#d4dacf; --edge:#76837a;
-  --accent:#2f5d4a; --accent-ink:#ffffff; --focus:#2f5d4a;
+  --bg:#ffffff; --surface:#ffffff; --subtle:#f3f4f6; --ink:#1b1c1f; --muted:#5f6368; --rule:#e4e5e8; --edge:#84878d;
+  --sel-bg:#1b1c1f; --sel-ink:#ffffff; --accent:#1d5fd1; --accent-ink:#ffffff; --focus:#1d5fd1;
   --who:#9a4523; --when:#735800; --what:#2f5d4a; --where:#3d5a8a; --find:#7a3f78;
   --who-bg:#f6e3d9; --when-bg:#f4ebc6; --what-bg:#dcebe2; --where-bg:#dde5f2; --find-bg:#efdeee;
   --good:#2f7a4a; --bad:#a63a2a;
@@ -22,20 +21,20 @@
   --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#141a17; --surface:#1c2420; --ink:#e7ece6; --muted:#9caa9f; --rule:#2e3a33; --edge:#6b7a70;
-  --accent:#8fc7a9; --accent-ink:#0f1512; --focus:#8fc7a9;
+  --bg:#141518; --surface:#1c1d21; --subtle:#26282d; --ink:#ececee; --muted:#a5a8ae; --rule:#2c2e33; --edge:#6c7078;
+  --sel-bg:#ececee; --sel-ink:#141518; --accent:#8ab4ff; --accent-ink:#141518; --focus:#8ab4ff;
   --who:#f0a07a; --when:#e5c55a; --what:#8fc7a9; --where:#9db8e6; --find:#d9a3d6;
   --who-bg:#3f2a20; --when-bg:#3a3215; --what-bg:#1f3a2e; --where-bg:#1f2b40; --find-bg:#37233a;
   --good:#7fd29a; --bad:#f08a7a; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#141a17; --surface:#1c2420; --ink:#e7ece6; --muted:#9caa9f; --rule:#2e3a33; --edge:#6b7a70;
-  --accent:#8fc7a9; --accent-ink:#0f1512; --focus:#8fc7a9;
+  --bg:#141518; --surface:#1c1d21; --subtle:#26282d; --ink:#ececee; --muted:#a5a8ae; --rule:#2c2e33; --edge:#6c7078;
+  --sel-bg:#ececee; --sel-ink:#141518; --accent:#8ab4ff; --accent-ink:#141518; --focus:#8ab4ff;
   --who:#f0a07a; --when:#e5c55a; --what:#8fc7a9; --where:#9db8e6; --find:#d9a3d6;
   --who-bg:#3f2a20; --when-bg:#3a3215; --what-bg:#1f3a2e; --where-bg:#1f2b40; --find-bg:#37233a;
   --good:#7fd29a; --bad:#f08a7a; color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
 
 *{box-sizing:border-box}
-html{color-scheme:light}
 body{margin:0}
 img{max-width:100%}
 [hidden]{display:none!important}
@@ -48,6 +47,13 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:0.9
 
 .wrap{max-width:60rem;margin:0 auto;padding-block:28px 48px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:22px}
 header{display:flex;flex-direction:column;gap:6px}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.theme-toggle{font:inherit;font-size:0.875rem;display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--ink);border:1px solid var(--edge);border-radius:999px;padding:6px 12px 6px 8px;min-height:36px;cursor:pointer}
+.theme-toggle:hover{background:var(--subtle)}
+.track{position:relative;width:34px;height:20px;border-radius:999px;border:1px solid var(--edge);background:var(--subtle);flex:none}
+.thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--muted);transition:transform .15s}
+.theme-toggle[aria-pressed="true"] .track{background:var(--sel-bg);border-color:var(--sel-bg)}
+.theme-toggle[aria-pressed="true"] .thumb{transform:translateX(14px);background:var(--sel-ink)}
 .eyebrow{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 h1{font-family:var(--f-cite);font-weight:600;font-size:clamp(1.75rem,5vw,2.5rem);line-height:1.1;margin:0;text-wrap:balance}
 .lede{margin:0;color:var(--muted);max-width:62ch}
@@ -58,11 +64,11 @@ main{display:flex;flex-direction:column;gap:22px}
 .ctl-label{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .seg{display:flex;flex-wrap:wrap;border:1px solid var(--edge);border-radius:8px;background:var(--surface);padding:3px;gap:2px}
 .seg button{font:inherit;font-size:0.875rem;border:0;background:transparent;color:var(--ink);padding:7px 12px;min-height:36px;border-radius:6px;cursor:pointer}
-.seg button:hover{background:var(--bg)}
-.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:500}
+.seg button:hover{background:var(--subtle)}
+.seg button[aria-pressed="true"]{background:var(--sel-bg);color:var(--sel-ink);font-weight:500}
 
 /* catalog card */
-.card{position:relative;background:var(--surface);border:1px solid var(--edge);border-radius:4px;padding:20px 22px 22px 44px}
+.card{position:relative;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.06);border:1px solid var(--edge);border-radius:4px;padding:20px 22px 22px 44px}
 .card::before{content:"";position:absolute;top:0;bottom:0;left:30px;width:1px;background:var(--who);opacity:.4}
 .card-meta{display:flex;justify-content:space-between;gap:6px 14px;flex-wrap:wrap;font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--rule);margin-bottom:6px}
 .fake{color:var(--who);font-weight:500}
@@ -81,7 +87,7 @@ main{display:flex;flex-direction:column;gap:22px}
 .g-where{--c:var(--where);--cbg:var(--where-bg);--ls:dashed}
 .g-find{--c:var(--find);--cbg:var(--find-bg);--ls:wavy}
 .quiz .part{text-decoration-color:var(--edge);text-decoration-style:solid}
-.quiz .part:hover{background:var(--bg)}
+.quiz .part:hover{background:var(--subtle)}
 
 .tip{margin:16px 0 0;display:flex;gap:10px;align-items:baseline;font-size:0.9375rem;max-width:68ch}
 .tip-label{flex:none;font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--who);font-weight:500}
@@ -125,7 +131,8 @@ footer a{color:var(--accent)}
 @media (forced-colors: active){
   .part[aria-pressed="true"],.part.right{outline:3px solid Highlight}
   .part.wrong{outline:3px dashed Highlight}
-  .seg button[aria-pressed="true"],.chip[aria-pressed="true"]{outline:2px solid Highlight;outline-offset:1px}
+  .seg button[aria-pressed="true"],.chip[aria-pressed="true"],.theme-toggle[aria-pressed="true"]{outline:2px solid Highlight;outline-offset:1px}
+  .thumb{background:ButtonText}
   .card::before{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -135,7 +142,7 @@ footer a{color:var(--accent)}
 <a class="skip" href="#card">Skip to the citation</a>
 <div class="wrap">
   <header>
-    <span class="eyebrow">Anatomy of a source</span>
+    <div class="topline"><span class="eyebrow">Anatomy of a source</span><button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false"><span class="track" aria-hidden="true"><span class="thumb"></span></span>Dark mode</button></div>
     <h1>Citation Anatomy</h1>
     <p class="lede">Every piece of a citation answers a question about the source: who made it, when, what it is, where it was published, and how to find it again. Select any part to see what it tells you.</p>
   </header>
@@ -588,6 +595,20 @@ $("nextBtn").addEventListener("click", () => {
   newQuestion(true);
 });
 $("resetBtn").addEventListener("click", () => { S.right = 0; S.total = 0; renderScore(); announce("Score reset."); });
+
+// Dark mode toggle: follows the device setting until the visitor chooses.
+const darkMQ = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
+const isDark = () => { const t = document.documentElement.getAttribute("data-theme"); return t ? t === "dark" : !!(darkMQ && darkMQ.matches); };
+const syncTheme = () => $("themeToggle").setAttribute("aria-pressed", String(isDark()));
+$("themeToggle").addEventListener("click", () => {
+  const next = isDark() ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try{ localStorage.setItem("ca-theme", next); }catch(e){}
+  syncTheme(); announce(next === "dark" ? "Dark mode on." : "Dark mode off.");
+});
+if (darkMQ && darkMQ.addEventListener) darkMQ.addEventListener("change", syncTheme);
+new MutationObserver(syncTheme).observe(document.documentElement, {attributes:true, attributeFilter:["data-theme"]});
+syncTheme();
 
 buildSeg($("srcSeg"), Object.fromEntries(SOURCES.map(s => [s.id, s.label])), "src");
 buildSeg($("styleSeg"), STYLES, "style");
